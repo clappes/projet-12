@@ -1,0 +1,10 @@
+.leftsidebarcard {
+    background-color: #fff;
+    width: 64px;
+    height: 64px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    border-radius: 6px;
+}

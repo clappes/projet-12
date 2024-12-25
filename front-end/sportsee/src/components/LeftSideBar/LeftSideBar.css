@@ -1,0 +1,24 @@
+.leftsidebar {
+    background-color: #000;
+    width: 8.1%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+.iconesection {
+    position: fixed;
+    top: 33%;
+}
+.copyrightsection {
+    position: fixed;
+    top: 83%;
+}
+.copyright {
+    color: #fff;
+    font-family: 'Roboto';
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 24px;
+    transform: rotate(-90deg);
+}

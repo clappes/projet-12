@@ -1,0 +1,38 @@
+.cardLineChart {
+    position: relative;
+}
+.cardLineChart-title {
+    position: absolute;
+    font-family: 'Roboto';
+    font-weight: 500;
+    font-size: 15px;
+    color: #FFFFFF;
+    opacity: 0.5;
+    margin: 0;
+    width: 147px;
+    top: 30px;
+    left: 30px;
+}
+
+.recharts-cartesian-axis-ticks {
+    padding: 0 15px !important;
+}
+
+.custom-tooltip-linear {
+    background-color: #FFF;
+    padding: 5px 10px;
+}
+
+.tooltip-min {
+    color: #000;
+    font-weight: 400;
+}
+
+@media screen and (max-width: 1439px) {
+    .recharts-responsive-container {
+        width: 180px!important;
+    }
+    .cardLineChart-title {
+        width: 100px;
+    }
+}

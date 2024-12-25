@@ -1,0 +1,51 @@
+.card {
+    background-color: #FBFBFB;
+    padding: 32px;
+    display: flex;
+    max-width: 258px;
+    height: 60px;
+}
+
+@media only screen and (max-width : 1439px) {
+    .card {
+        max-width: 200px;
+    }
+}
+
+.card-number {
+   color: #282D30;
+   font-family: 'Roboto';
+   font-weight: 700;
+   font-size: 20px;
+   line-height: 24px;
+}
+.card-numbertype {
+   color: #74798C;
+   font-family: 'Roboto';
+   font-weight: 500;
+   font-size: 14px;
+   line-height: 24px;
+}
+
+.card-icon {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px;
+    margin-right: 24px;
+}
+
+.card-icon_red {
+    background-color: #f8dede;
+}
+.card-icon_blue {
+    background-color: #c8e7fa;
+}
+.card-icon_yellow {
+    background-color: #faf1c8;
+}
+.card-icon_pink {
+    background-color: #fccbda;
+}
