@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getUser } from "../../api";
 import { Navigate } from "react-router-dom";
+import ApiService from "../../api/ApiService.js";
 
 import LeftSideBar from "../../components/LeftSideBar/LeftSideBar";
 import BarsChart from "../../components/BarChart/BarsChart";
@@ -19,21 +19,43 @@ import lipid from "../../assets/cheeseburger.svg"
 function Home() {
 
     const { id } = useParams();
-    const [data, setData] = useState(null);
+    const [userData, setUserData] = useState(null);
+    const [activityData, setActivityData] = useState(null);
+    const [performanceData, setPerformanceData] = useState(null);
+    const [sessionsData, setSessionsData] = useState(null);
     const [error, setError] = useState(false);
+    const [loading, setLoading] = useState(true);
 
-    const fetchUser = async (id) => {
-        const response = await getUser(id);
-        if (response === "can not get user") {
-          setError(true);
-        } else {
-          setData(response);
+    const apiService = new ApiService();
+
+    const fetchAllData = async (userId) => {
+        try {
+            const user = await apiService.getUser(userId);
+            if (!user || user === "can not get user") {
+                setError(true);
+                return;
+            }
+            setUserData(user);
+
+            const activity = await apiService.getActivity(userId);
+            setActivityData(activity);
+
+            const performance = await apiService.getPerformance(userId);
+            setPerformanceData(performance);
+
+            const sessions = await apiService.getSessions(userId);
+            setSessionsData(sessions);
+        } catch (err) {
+            console.error("Error fetching data:", err);
+            setError(true);
+        } finally {
+            setLoading(false);
         }
     };
 
     useEffect(() => {
         if (id) {
-          fetchUser(id);
+            fetchAllData(id);
         }
     }, [id]);
 
@@ -41,37 +63,44 @@ function Home() {
         return <Navigate to="/error" replace={true} />;
     }
   
-  return (
-    <>
-        <LeftSideBar />
-        <section className="dashboard">
+    if (loading) {
+        return <div>Chargement des données...</div>; // Affichage pendant le chargement
+      }
+    
+      return (
+        <>
+          <LeftSideBar />
+          <section className="dashboard">
             <article className="name-info">
-                <h1 className="name">Bonjour <span className="red">{data?.userInfos.firstName}</span></h1>
-                <p className="subtitle">Félicitation ! Vous avez explosé vos objectifs hier 👏</p>
+              <h1 className="name">
+                Bonjour <span className="red">{userData?.userInfos?.firstName}</span>
+              </h1>
+              <p className="subtitle">Félicitation ! Vous avez explosé vos objectifs hier 👏</p>
             </article>
             <article className="charts-info">
-                <div className="activity">
-                    <BarsChart />
-                </div>
-                <div className="sessions-duration">
-                    <CardLineChart />
-                </div>
-                <div className="feature">
-                    <RadarsChart />
-                </div>
-                <div className="score">
-                    <RadialBarsChart />
-                </div>
-                <div className="nutrition-score">
-                    <CardRight icon={calorie} count={data?.keyData.calorieCount} type={"Calories"} />
-                    <CardRight icon={protein} count={data?.keyData.proteinCount} type={"Proteines"}/>
-                    <CardRight icon={carbohydrate} count={data?.keyData.carbohydrateCount} type={"Glucides"}/>
-                    <CardRight icon={lipid} count={data?.keyData.lipidCount} type={"Lipides"}/>
-                </div>
+              <div className="activity">
+                <BarsChart data={activityData} />
+              </div>
+              <div className="sessions-duration">
+                <CardLineChart data={sessionsData} />
+              </div>
+              <div className="feature">
+                <RadarsChart data={performanceData} />
+              </div>
+              <div className="score">
+                <RadialBarsChart score={userData?.todayScore || userData?.score} />
+              </div>
+              <div className="nutrition-score">
+                <CardRight icon={calorie} count={userData?.keyData?.calorieCount} type={"Calories"} />
+                <CardRight icon={protein} count={userData?.keyData?.proteinCount} type={"Proteines"} />
+                <CardRight icon={carbohydrate} count={userData?.keyData?.carbohydrateCount} type={"Glucides"} />
+                <CardRight icon={lipid} count={userData?.keyData?.lipidCount} type={"Lipides"} />
+              </div>
             </article>
-        </section>
-    </>
-  );
-}
+          </section>
+        </>
+      );
+    }
+    
 
 export default Home;
