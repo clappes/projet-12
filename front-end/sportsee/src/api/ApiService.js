@@ -1,5 +1,6 @@
 class ApiService {
     constructor(mock = process.env.REACT_APP_MOCK === "true") {
+        console.log("REACT_APP_MOCK value:", process.env.REACT_APP_MOCK);
         this.useMock = mock;
         this.baseUrl = this.useMock ? "http://localhost:3001" : "http://localhost:3000";
     }
@@ -19,6 +20,7 @@ class ApiService {
         const url = this.useMock
             ? `${this.baseUrl}/user/${id}.json`
             : `${this.baseUrl}/user/${id}`;
+            console.log("Fetching user data from URL:", url);
         return this.fetchData(url);
     }
 
